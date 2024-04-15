@@ -31,10 +31,6 @@ function loadJSScriptAsESModule($script_handle)
     );
 }
 
-if (!isViteHMRAvailable()) {
-    return;
-}
-
 add_filter('stylesheet_uri', function () {
     return getViteDevServerAddress() . '/styles/main.scss';
 });
@@ -58,10 +54,8 @@ function enqueue_scripts_styles()
         wp_enqueue_script($handle, getViteDevServerAddress() . '/assets/scripts/main.js', array('jquery'), null);
         wp_enqueue_style('style', getViteDevServerAddress() . '/assets/styles/main.scss', null);
     } else {
-        $indexJS = 'index';
-        $indexCSS = 'style.css';
-        wp_enqueue_script($indexJS, get_stylesheet_directory_uri() . $GLOBALS['manifest']->$indexJS, array('jquery'), null);
-        wp_enqueue_style($indexCSS, get_stylesheet_directory_uri() . $GLOBALS['manifest']->$indexCSS, array(), null);
+        wp_enqueue_style('alloy/css', get_template_directory_uri() . '/dist/styles/main.css', false, null);
+        wp_enqueue_script('alloy/js', get_template_directory_uri() . '/dist/scripts/main.js', array(), null, true);
     }
 }
 
